@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EquipmentManagement.Migrations
 {
     [DbContext(typeof(EquipmentDBContext))]
-    [Migration("20211019073255_equiment-migration")]
-    partial class equimentmigration
+    [Migration("20211019104651_equipment-migration")]
+    partial class equipmentmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,18 @@ namespace EquipmentManagement.Migrations
                         .HasColumnType("int")
                         .HasColumnName("equipment_id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nchar(200)")
+                        .HasColumnName("descrition")
+                        .IsFixedLength(true);
+
+                    b.Property<string>("EquipmentName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nchar(50)")
+                        .HasColumnName("equipment_name")
+                        .IsFixedLength(true);
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit")

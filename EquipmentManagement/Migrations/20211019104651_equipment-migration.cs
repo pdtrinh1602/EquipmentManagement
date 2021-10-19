@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EquipmentManagement.Migrations
 {
-    public partial class equimentmigration : Migration
+    public partial class equipmentmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,9 @@ namespace EquipmentManagement.Migrations
                     equipment_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     type = table.Column<string>(type: "nchar(50)", fixedLength: true, maxLength: 50, nullable: true),
-                    is_available = table.Column<bool>(type: "bit", nullable: false)
+                    is_available = table.Column<bool>(type: "bit", nullable: false),
+                    equipment_name = table.Column<string>(type: "nchar(50)", fixedLength: true, maxLength: 50, nullable: true),
+                    descrition = table.Column<string>(type: "nchar(200)", fixedLength: true, maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {

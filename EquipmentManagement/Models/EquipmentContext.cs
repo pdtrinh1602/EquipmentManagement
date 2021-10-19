@@ -43,6 +43,16 @@ namespace Equipment.Models
                     .HasMaxLength(50)
                     .HasColumnName("type")
                     .IsFixedLength(true);
+
+                entity.Property(e => e.EquipmentName)
+                    .HasMaxLength(50)
+                    .HasColumnName("equipment_name")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(200)
+                    .HasColumnName("descrition")
+                    .IsFixedLength(true);
             });
 
             modelBuilder.Entity<Ticket>(entity =>

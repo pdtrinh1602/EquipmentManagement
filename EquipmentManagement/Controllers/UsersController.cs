@@ -4,6 +4,8 @@ using Equipment.Models;
 using System;
 using Microsoft.AspNetCore.Http;
 using Equipment.Repository;
+using System.Text.Json;
+using ConstantIns = Equipment.Constant.Constant;
 
 namespace Equipment.Controllers
 {
@@ -42,25 +44,36 @@ namespace Equipment.Controllers
                     return BadRequest();
                 userRepository.InsertUser(user);
                 userRepository.Save();
-                return StatusCode(StatusCodes.Status200OK, "Successful");
+                return StatusCode(StatusCodes.Status201Created, JsonSerializer.Serialize(user));
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error creating new user");
+                return StatusCode(StatusCodes.Status500InternalServerError, Constant.Constant.FAIL_CREATE_USER);
             }
         }
 
         // PUT api/users/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] User user)
         {
+            User targetUser = userRepository.GetUserByID(id);
         }
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            try 
+            {
+                userRepository.DeleteUser(id);
+                userRepository.Save();
+                return StatusCode(StatusCodes.Status204NoContent);
+
+            }
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
         }
     }
 }
