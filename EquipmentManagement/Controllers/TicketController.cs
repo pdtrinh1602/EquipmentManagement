@@ -19,47 +19,80 @@ namespace EquipmentManagement.Controllers
             this.ticketRepository = new TicketReponsitory(new EquipmentDBContext());
         }
 
+        //Get all
         [HttpGet]  // api/ticket
         public ActionResult<IEnumerable<Ticket>> Get()
         {
             return ticketRepository.GetAllTicket().ToList();
         }
 
-        [HttpGet("{id}", Name = "getById")]  // api/ticket/id
-        public ActionResult<Ticket> Get(int id)
+        //Get by id user
+        [HttpGet("user/{userId}")]  // api/ticket/id
+        public ActionResult<List<Ticket>> GetByUserId(int userId)
         {
-           
-        }
-
-        [HttpPost]  // api/ticket/id
-        public ActionResult<List<Ticket>> Post(int id, [FromBody] Ticket ticket)
-        {
-            context.Add(ticket);
-            context.SaveChangesAsync();
-            return new CreatedAtRouteResult("getById", new { id = ticket.id }, ticket);
-        }
-
-        [HttpPut("{id}")]  // api/ticket
-        public ActionResult<List<Ticket>> Put(int id, [FromBody] Ticket ticket)
-        {
-            ticket.id = id;
-            context.Entry(ticket).State = EntityState.Modified;
-            context.SaveChangesAsync();
-            return new OkObjectResult(context.Tickets.FirstOrDefault(x => x.id == id));
-        }
-
-        [HttpDelete("{id}")]  // api/ticket
-        public ActionResult<List<Ticket>> Delete(int id, [FromBody] Ticket ticket)
-        {
-            var existsId = context.Tickets.Any(x => x.id == id);
-            if (!existsId)
+            if (ticketRepository.CheckExistUserId(userId))
             {
-                return NotFound();
+                return ticketRepository.GetTicketByUserId(userId).ToList();
             }
-            context.Remove(new Ticket() { id = id });
-            context.SaveChanges();
-            return new OkObjectResult(context.Set<Ticket>());
+            return StatusCode(404, "UserId not exist");
         }
+
+        //Get by Id Equipment
+        [HttpGet("equipment/{equipmentId}")]  // api/ticket/id
+        public ActionResult<List<Ticket>> GetByEquipmentId(int equipmentId)
+        {
+            if (ticketRepository.CheckExistEquipmentId(equipmentId))
+            {
+                return ticketRepository.GetTicketByEquipmentId(equipmentId).ToList();
+            }
+            return StatusCode(404, "EquipmentId not exist");
+        }
+
+        //Create
+        [HttpPost]  // api/ticket/id
+        public ActionResult<List<Ticket>> Post([FromBody] Ticket ticket)
+        {
+            if (!ticketRepository.CheckExistUserIdInUserTable(ticket.UserId))
+            {
+                return StatusCode(404, "UserId not exist");
+            }
+            if (!ticketRepository.CheckExistEquipmentIdInEquipmentTable(ticket.EquipmentId))
+            {
+                return StatusCode(404, "EquipmentId not exist");
+            }
+            if (ticketRepository.CheckExistUserIdAndEquipmentId(ticket.UserId, ticket.EquipmentId))
+            {
+                return StatusCode(400, "EquipmentId and UserId is exists, so not add field");
+            }
+
+            ticketRepository.CreateTicket(ticket);
+            return new OkObjectResult(ticket);
+        }
+
+
+        [HttpPut]  // api/ticket
+        public ActionResult<List<Ticket>> Put([FromBody] Ticket ticket)
+        {
+            if (ticketRepository.CheckExistUserIdAndEquipmentId(ticket.UserId, ticket.EquipmentId))
+            {
+                return StatusCode(400, "EquipmentId and UserId is exists, so not update");
+            }
+            ticketRepository.UpdateTicket(ticket);
+            return new OkObjectResult(ticket);
+        }
+
+        //[HttpDelete("{id}")]  // api/ticket
+        //public ActionResult<List<Ticket>> Delete(int id, [FromBody] Ticket ticket)
+        //{
+        //    var existsId = context.Tickets.Any(x => x.id == id);
+        //    if (!existsId)
+        //    {
+        //        return NotFound();
+        //    }
+        //    context.Remove(new Ticket() { id = id });
+        //    context.SaveChanges();
+        //    return new OkObjectResult(context.Set<Ticket>());
+        //}
 
     }
 }

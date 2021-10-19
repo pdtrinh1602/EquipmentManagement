@@ -34,7 +34,7 @@ namespace EquipmentManagement.Repository
             return tickets;
         }
 
-        public void UpdateTicket(int userId, int equipmentId, Ticket ticket)
+        public void UpdateTicket(Ticket ticket)
         {
             ticket.UserId = userId;
             ticket.EquipmentId = equipmentId;
@@ -49,5 +49,41 @@ namespace EquipmentManagement.Repository
                 .Where(x => x.EquipmentId == equipmentId && x.UserId == userId));
             context.SaveChanges();
         }
+
+        public void CreateTicket(Ticket ticket)
+        {
+            context.Add(ticket);
+            context.SaveChanges();
+        }
+
+        //Check exist id user in tabe User
+        public bool CheckExistUserIdInUserTable(int userId)
+        {
+            return context.Users.Any(x => x.UserId == userId);
+        }
+
+        //Check exist id equipment in table Equipment
+        public bool CheckExistEquipmentIdInEquipmentTable(int equipmentId)
+        {
+            return context.Equipment.Any(x => x.EquipmentId == equipmentId);
+        }
+
+        public bool CheckExistUserIdAndEquipmentId(int userId, int equipmentId)
+        {
+            return context.Tickets.Any(x => x.EquipmentId == equipmentId && x.UserId == userId);
+        }
+
+        //Check exist id user
+        public bool CheckExistUserId(int userId)
+        {
+            return context.Tickets.Any(x => x.UserId == userId);
+        }
+
+        //Check exist id equipment
+        public bool CheckExistEquipmentId(int equipmentId)
+        {
+            return context.Tickets.Any(x => x.EquipmentId == equipmentId);
+        }
+
     }
 }
