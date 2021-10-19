@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EquipmentManagement.Migrations
 {
     [DbContext(typeof(EquipmentDBContext))]
-    [Migration("20211019073255_equiment-migration")]
-    partial class equimentmigration
+    [Migration("20211019093751_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
