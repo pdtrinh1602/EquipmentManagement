@@ -30,13 +30,13 @@ namespace EquipmentManagement.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(200)
-                        .HasColumnType("nchar(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("descrition")
                         .IsFixedLength(true);
 
                     b.Property<string>("EquipmentName")
                         .HasMaxLength(50)
-                        .HasColumnType("nchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("equipment_name")
                         .IsFixedLength(true);
 
@@ -46,7 +46,7 @@ namespace EquipmentManagement.Migrations
 
                     b.Property<string>("Type")
                         .HasMaxLength(50)
-                        .HasColumnType("nchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("type")
                         .IsFixedLength(true);
 
@@ -95,7 +95,7 @@ namespace EquipmentManagement.Migrations
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("user_name")
                         .IsFixedLength(true);
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EquipmentManagement.Migrations
 {
     [DbContext(typeof(EquipmentDBContext))]
-    [Migration("20211019141726_Initial")]
-    partial class Initial
+    [Migration("20211020090812_equipment-v1")]
+    partial class equipmentv1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,13 +30,25 @@ namespace EquipmentManagement.Migrations
                         .HasColumnName("equipment_id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnName("descrition")
+                        .IsFixedLength(true);
+
+                    b.Property<string>("EquipmentName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("equipment_name")
+                        .IsFixedLength(true);
+
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit")
                         .HasColumnName("is_available");
 
                     b.Property<string>("Type")
                         .HasMaxLength(50)
-                        .HasColumnType("nchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("type")
                         .IsFixedLength(true);
 
@@ -85,7 +97,7 @@ namespace EquipmentManagement.Migrations
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nchar(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("user_name")
                         .IsFixedLength(true);
 

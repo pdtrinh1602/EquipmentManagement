@@ -33,14 +33,16 @@ namespace Equipment.Controllers
         public ActionResult<User> Get(int id)
         {
             User targetUser = userRepository.GetUserByID(id);
-            return StatusCode(StatusCodes.Status200OK, JsonSerializer.Serialize(targetUser));
+            //return StatusCode(StatusCodes.Status200OK, JsonSerializer.Serialize(targetUser));
+            return new OkObjectResult(targetUser);
         }
 
         [HttpGet("searchs")]
         public ActionResult<User> Get(string username)
         {
-            IEnumerable<User> result = userRepository.GetUsersByConditions(username); 
-            return StatusCode(StatusCodes.Status200OK, JsonSerializer.Serialize(result));
+            IEnumerable<User> result = userRepository.GetUsersByConditions(username);
+            //return StatusCode(StatusCodes.Status200OK, JsonSerializer.Serialize(result));
+            return new OkObjectResult(result);
         }
 
         // POST api/users

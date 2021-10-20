@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EquipmentManagement.Migrations
 {
-    public partial class equipmentmigration : Migration
+    public partial class equipmentv1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,10 +13,10 @@ namespace EquipmentManagement.Migrations
                 {
                     equipment_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    type = table.Column<string>(type: "nchar(50)", fixedLength: true, maxLength: 50, nullable: true),
+                    type = table.Column<string>(type: "nvarchar(50)", fixedLength: true, maxLength: 50, nullable: true),
                     is_available = table.Column<bool>(type: "bit", nullable: false),
-                    equipment_name = table.Column<string>(type: "nchar(50)", fixedLength: true, maxLength: 50, nullable: true),
-                    descrition = table.Column<string>(type: "nchar(200)", fixedLength: true, maxLength: 200, nullable: true)
+                    equipment_name = table.Column<string>(type: "nvarchar(50)", fixedLength: true, maxLength: 50, nullable: true),
+                    descrition = table.Column<string>(type: "nvarchar(200)", fixedLength: true, maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,7 +29,7 @@ namespace EquipmentManagement.Migrations
                 {
                     user_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    user_name = table.Column<string>(type: "nchar(50)", fixedLength: true, maxLength: 50, nullable: false),
+                    user_name = table.Column<string>(type: "nvarchar(50)", fixedLength: true, maxLength: 50, nullable: false),
                     is_admin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

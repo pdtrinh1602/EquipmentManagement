@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -13,6 +14,7 @@ namespace Equipment.Models
         }
 
         public int UserId { get; set; }
+        [Column(TypeName = "nvarchar(200)")]
         public string UserName { get; set; }
         public bool IsAdmin { get; set; }
 
