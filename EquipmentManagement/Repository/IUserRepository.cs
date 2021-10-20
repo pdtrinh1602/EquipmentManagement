@@ -10,7 +10,8 @@ namespace Equipment.Repository
         User GetUserByID(int userId);
         void InsertUser(User user);
         void DeleteUser(int userId);
-        void UpdateUser(User user);
+        void UpdateUser(int userId, User user);
+        IEnumerable<User> GetUsersByConditions(string username);
         void Save();
     }
 }

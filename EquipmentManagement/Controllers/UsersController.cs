@@ -14,7 +14,7 @@ namespace Equipment.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private IUserRepository userRepository;
+        private UserRepository userRepository;
 
         public UsersController()
         {
@@ -22,16 +22,25 @@ namespace Equipment.Controllers
         }
         // GET api/users
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<User>> Get()
         {
-            return new string[] { "value1", "value2" };
+            IEnumerable<User> listUser = userRepository.GetUsers();
+            return StatusCode(StatusCodes.Status200OK, JsonSerializer.Serialize(listUser));
         }
 
         // GET api/users/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<User> Get(int id)
         {
-            return "value";
+            User targetUser = userRepository.GetUserByID(id);
+            return StatusCode(StatusCodes.Status200OK, JsonSerializer.Serialize(targetUser));
+        }
+
+        [HttpGet("searchs")]
+        public ActionResult<User> Get(string username)
+        {
+            IEnumerable<User> result = userRepository.GetUsersByConditions(username); 
+            return StatusCode(StatusCodes.Status200OK, JsonSerializer.Serialize(result));
         }
 
         // POST api/users
@@ -54,9 +63,23 @@ namespace Equipment.Controllers
 
         // PUT api/users/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] User user)
+        public ActionResult Put(int id, [FromBody] User user)
         {
-            User targetUser = userRepository.GetUserByID(id);
+            try
+            {
+                User targetUser = userRepository.GetUserByID(id);
+                if (targetUser == null)
+                {
+                    return StatusCode(StatusCodes.Status204NoContent);
+                }
+                userRepository.UpdateUser(id, user);
+                userRepository.Save();
+                return StatusCode(StatusCodes.Status200OK);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // DELETE api/users/5

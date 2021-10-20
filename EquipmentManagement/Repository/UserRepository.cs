@@ -20,6 +20,11 @@ namespace Equipment.Repository
             return context.Users.ToList();
         }
 
+        public IEnumerable<User> GetUsersByConditions(string username)
+        {
+            return context.Users.Where(user => user.UserName.Contains(username)).ToList();
+        }
+
         public User GetUserByID(int id)
         {
             return context.Users.Find(id);
@@ -36,9 +41,12 @@ namespace Equipment.Repository
             context.Users.Remove(student);
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(int userId, User user)
         {
-            context.Entry(user).State = EntityState.Modified;
+            User targetUser = context.Users.Find(userId);
+            targetUser.UserName = user.UserName;
+            targetUser.IsAdmin = user.IsAdmin;
+            context.Users.Update(targetUser);
         }
 
         public void Save()
@@ -66,5 +74,4 @@ namespace Equipment.Repository
             GC.SuppressFinalize(this);
         }
     }
-
 }
