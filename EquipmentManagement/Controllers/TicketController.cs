@@ -1,4 +1,5 @@
 ﻿using Equipment.Models;
+using EquipmentManagement.DTOs.Ticket;
 using EquipmentManagement.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,6 +25,17 @@ namespace EquipmentManagement.Controllers
         public ActionResult<IEnumerable<Ticket>> Get()
         {
             return ticketRepository.GetAllTicket().ToList();
+        }
+
+        //Get by UserId and EquipmentId
+        [HttpPost("user-and-equipment")]  // api/ticket
+        public ActionResult<List<Ticket>> GetByUserAndEquipment([FromBody] MultiIdDto multiIdDto)
+        {
+            if (!ticketRepository.CheckExistUserIdAndEquipmentId(multiIdDto.userId, multiIdDto.equipmentId))
+            {
+                return NotFound();
+            }
+            return new OkObjectResult(ticketRepository.GetByUserIdAndEquipmentId(multiIdDto.userId, multiIdDto.equipmentId));
         }
 
         //Get by id user
@@ -52,14 +64,17 @@ namespace EquipmentManagement.Controllers
         [HttpPost]  // api/ticket/id
         public ActionResult<List<Ticket>> Post([FromBody] Ticket ticket)
         {
+            //Check exist id User
             if (!ticketRepository.CheckExistUserIdInUserTable(ticket.UserId))
             {
                 return StatusCode(404, "UserId not exist");
             }
+            //Check exist id Equipment
             if (!ticketRepository.CheckExistEquipmentIdInEquipmentTable(ticket.EquipmentId))
             {
                 return StatusCode(404, "EquipmentId not exist");
             }
+            //Check exist field
             if (ticketRepository.CheckExistUserIdAndEquipmentId(ticket.UserId, ticket.EquipmentId))
             {
                 return StatusCode(400, "EquipmentId and UserId is exists, so not add field");
@@ -69,30 +84,28 @@ namespace EquipmentManagement.Controllers
             return new OkObjectResult(ticket);
         }
 
-
+        //Update
         [HttpPut]  // api/ticket
         public ActionResult<List<Ticket>> Put([FromBody] Ticket ticket)
         {
-            if (ticketRepository.CheckExistUserIdAndEquipmentId(ticket.UserId, ticket.EquipmentId))
+            if (!ticketRepository.CheckExistUserIdAndEquipmentId(ticket.UserId, ticket.EquipmentId))
             {
-                return StatusCode(400, "EquipmentId and UserId is exists, so not update");
+                return StatusCode(400, "EquipmentId and UserId is not exists");
             }
             ticketRepository.UpdateTicket(ticket);
             return new OkObjectResult(ticket);
         }
 
-        //[HttpDelete("{id}")]  // api/ticket
-        //public ActionResult<List<Ticket>> Delete(int id, [FromBody] Ticket ticket)
-        //{
-        //    var existsId = context.Tickets.Any(x => x.id == id);
-        //    if (!existsId)
-        //    {
-        //        return NotFound();
-        //    }
-        //    context.Remove(new Ticket() { id = id });
-        //    context.SaveChanges();
-        //    return new OkObjectResult(context.Set<Ticket>());
-        //}
-
+        //Delete
+        [HttpDelete()]  // api/ticket
+        public ActionResult<List<Ticket>> Delete([FromBody] MultiIdDto multiIdDto)
+        {
+            if (!ticketRepository.CheckExistUserIdAndEquipmentId(multiIdDto.userId, multiIdDto.equipmentId))
+            {
+                return StatusCode(400, "EquipmentId and UserId is not exists");
+            }
+            ticketRepository.DeleteTicket(multiIdDto.userId, multiIdDto.equipmentId);
+            return new OkObjectResult(ticketRepository.GetAllTicket());
+        }
     }
 }

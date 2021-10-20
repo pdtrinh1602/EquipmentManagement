@@ -17,6 +17,8 @@ namespace EquipmentManagement.Repository
         //Get by Equipment id
         IEnumerable<Ticket> GetTicketByEquipmentId(int equipmentId);
 
+        Ticket GetByUserIdAndEquipmentId(int userId, int equipmentId);
+
         //Update Equipment
         void UpdateTicket(Ticket ticket);
 

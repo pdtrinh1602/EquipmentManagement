@@ -21,9 +21,14 @@ namespace EquipmentManagement.Repository
             return context.Tickets.AsNoTracking().ToList();
         }
 
+        public Ticket GetByUserIdAndEquipmentId(int userId, int equipmentId)
+        {
+            return context.Tickets.Where(x => x.UserId == userId && x.EquipmentId == equipmentId).FirstOrDefault();
+        }
+
         public IEnumerable<Ticket> GetTicketByEquipmentId(int equipmentId)
         {
-            var tickets = context.Tickets.Where(x => x.EquipmentId == equipmentId);
+            var tickets = context.Tickets.Where(x => x.EquipmentId == equipmentId).ToList();
             return tickets;
 
         }
@@ -36,8 +41,8 @@ namespace EquipmentManagement.Repository
 
         public void UpdateTicket(Ticket ticket)
         {
-            ticket.UserId = userId;
-            ticket.EquipmentId = equipmentId;
+            ticket.UserId = ticket.UserId;
+            ticket.EquipmentId = ticket.EquipmentId;
             context.Entry(ticket).State = EntityState.Modified;
             context.SaveChanges();
         }
@@ -47,7 +52,7 @@ namespace EquipmentManagement.Repository
 
             context.RemoveRange(context.Tickets
                 .Where(x => x.EquipmentId == equipmentId && x.UserId == userId));
-            context.SaveChanges();
+            context.SaveChanges();                          
         }
 
         public void CreateTicket(Ticket ticket)
