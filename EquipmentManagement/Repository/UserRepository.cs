@@ -8,7 +8,7 @@ namespace Equipment.Repository
 {
     public class UserRepository : IUserRepository, IDisposable
     {
-        private EquipmentDBContext context;
+        public EquipmentDBContext context;
 
         public UserRepository(EquipmentDBContext context)
         {
