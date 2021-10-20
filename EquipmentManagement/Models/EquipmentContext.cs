@@ -25,7 +25,7 @@ namespace Equipment.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=PDTRINH;Database=Equipment;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.;Database=Equipment;Trusted_Connection=True;");
             }
         }
 
