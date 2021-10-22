@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace EquipmentManagement.Controllers
 {
-    [Route("api/ticket")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class TicketController : ControllerBase
+    public class TicketsController : ControllerBase
     {
         private ITicketReponsitory ticketRepository;
 
-        public TicketController()
+        public TicketsController()
         {
             this.ticketRepository = new TicketReponsitory(new EquipmentDBContext());
         }
@@ -39,7 +39,7 @@ namespace EquipmentManagement.Controllers
         }
 
         //Get by id user
-        [HttpGet("user/{userId}")]  // api/ticket/id
+        [HttpGet("users/{userId}")]  // api/ticket/id
         public ActionResult<List<Ticket>> GetByUserId(int userId)
         {
             if (ticketRepository.CheckExistUserId(userId))
@@ -50,7 +50,7 @@ namespace EquipmentManagement.Controllers
         }
 
         //Get by Id Equipment
-        [HttpGet("equipment/{equipmentId}")]  // api/ticket/id
+        [HttpGet("equipments/{equipmentId}")]  // api/ticket/id
         public ActionResult<List<Ticket>> GetByEquipmentId(int equipmentId)
         {
             if (ticketRepository.CheckExistEquipmentId(equipmentId))

@@ -14,11 +14,11 @@ namespace EquipmentManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EquipmentController : ControllerBase
+    public class EquipmentsController : ControllerBase
     {
         private readonly IEquipmentRepository equipmentRepository;
 
-        public EquipmentController()
+        public EquipmentsController()
         {
             this.equipmentRepository = new EquipmentRepository(new EquipmentDBContext());
         }
@@ -120,12 +120,17 @@ namespace EquipmentManagement.Controllers
 
         // DELETE api/<EquipmentController>/5
         [HttpDelete("{id}")]
-        public ActionResult<string> Delete(int id)
+        public ActionResult Delete(int id)
         {
             try
             {
+                EquipmentModel targeEquipment = equipmentRepository.GetEquipmentById(id);
+                if(targeEquipment == null)
+                {
+                    return new NotFoundResult();
+                }
                 equipmentRepository.DeleteEquipmnet(id);
-                return StatusCode(StatusCodes.Status200OK, Constant.DELETE_SUCCESS);
+                return new NoContentResult();
             }
             catch (Exception)
             {

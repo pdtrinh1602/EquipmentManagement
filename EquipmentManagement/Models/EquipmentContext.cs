@@ -25,7 +25,7 @@ namespace Equipment.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.;Database=Equipment;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("workstation id=Equipment.mssql.somee.com;packet size=4096;user id=pdtrinh_SQLLogin_1;pwd=cfl4ma8g7q;data source=Equipment.mssql.somee.com;persist security info=False;initial catalog=Equipment");
             }
         }
 
